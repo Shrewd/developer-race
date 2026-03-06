@@ -485,6 +485,40 @@ textarea {
 
 /* Base styling handles both now, logic is in SVG string injection */
 
+/* Compact Mode (for > 12 runners) */
+#track-container.compact-mode .race-lane {
+    padding: 0;
+}
+
+#track-container.compact-mode .lane-label {
+    font-size: 10px;
+    width: 130px;
+    min-width: 130px;
+}
+
+#track-container.compact-mode .lane-track {
+    height: 30px;
+    margin-right: 40px;
+}
+
+#track-container.compact-mode .sprite-container {
+    width: 30px;
+    height: 30px;
+}
+
+#track-container.compact-mode .sprite {
+    width: 26px;
+    height: 26px;
+    top: -2px;
+    left: -2px;
+}
+
+#track-container.compact-mode .event-icon {
+    font-size: 12px;
+    top: -10px;
+    left: 4px;
+}
+
 /* Typing animation for sprite */
 @keyframes typing {
     0% {
@@ -642,9 +676,9 @@ textarea {
 /* Winner Screen */
 #view-winner {
     overflow-y: auto;
-    align-items: center;
-    justify-content: flex-start;
-    flex-direction: column;
+    overflow-x: hidden;
+    display: block;
+    /* Let the container fill width naturally */
 }
 
 .markdown-preview {
@@ -654,9 +688,12 @@ textarea {
     position: relative;
     z-index: 2;
     max-width: 800px;
-    width: 100%;
+    margin: 0 auto;
+    /* Center horizontally */
     margin-bottom: 40px;
-    /* Extra space to ensure the button can be scrolled to */
+    display: flex;
+    flex-direction: column;
+    align-items: center;
 }
 
 /* Typewriter */

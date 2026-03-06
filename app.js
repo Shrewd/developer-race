@@ -162,8 +162,10 @@ window.app = {
     renderLineNumbers(count, containerId) {
         const container = document.getElementById(containerId);
         if (!container) return;
+        // Ensure minimum line count for visual appearance
+        const finalCount = Math.max(count, 35);
         let html = '';
-        for (let i = 1; i <= count; i++) {
+        for (let i = 1; i <= finalCount; i++) {
             html += `<div>${i}</div>`;
         }
         container.innerHTML = html;
@@ -232,6 +234,13 @@ window.app = {
 
     buildRaceTrack() {
         const container = document.getElementById('track-container');
+
+        if (this.state.runners.length > 12) {
+            container.classList.add('compact-mode');
+        } else {
+            container.classList.remove('compact-mode');
+        }
+
         let html = `<div class="finish-line"></div><div class="finish-label">// DONE</div>`;
 
         this.state.runners.forEach((runner, index) => {
