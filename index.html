@@ -75,16 +75,21 @@
             <div class="editor-area">
                 <!-- Tabs -->
                 <div class="tabs">
-                    <div class="tab active" id="tab-readme" onclick="app.switchTab('readme')">
+                    <div class="tab active" tabindex="0" id="tab-readme" onclick="app.switchTab('readme')"
+                        onkeydown="if(event.key==='Enter'||event.key===' ') app.switchTab('readme')">
                         <span class="file-icon">↓</span> README.md
                     </div>
-                    <div class="tab" id="tab-config" onclick="app.switchTab('config')">
+                    <div class="tab" tabindex="0" id="tab-config" onclick="app.switchTab('config')"
+                        onkeydown="if(event.key==='Enter'||event.key===' ') app.switchTab('config')">
                         <span class="file-icon">{}</span> race-config.json
                     </div>
-                    <div class="tab" id="tab-race" onclick="app.switchTab('race')" style="display: none;">
+                    <div class="tab" tabindex="0" id="tab-race" onclick="app.switchTab('race')" style="display: none;"
+                        onkeydown="if(event.key==='Enter'||event.key===' ') app.switchTab('race')">
                         <span class="file-icon">≡</span> race-output.log
                     </div>
-                    <div class="tab" id="tab-winner" onclick="app.switchTab('winner')" style="display: none;">
+                    <div class="tab" tabindex="0" id="tab-winner" onclick="app.switchTab('winner')"
+                        style="display: none;"
+                        onkeydown="if(event.key==='Enter'||event.key===' ') app.switchTab('winner')">
                         <span class="file-icon">↓</span> winner.md
                     </div>
                 </div>
@@ -184,6 +189,10 @@ Peter
                                 <button id="btn-load" class="run-button" style="background-color: var(--syn-string);"
                                     onclick="document.getElementById('config-file-input').click()">
                                     📂 Load Config
+                                </button>
+                                <button id="btn-reset" class="run-button" style="background-color: #d16969;"
+                                    onclick="app.resetAppToDefault()">
+                                    🗑️ Reset Defaults
                                 </button>
                                 <input type="file" id="config-file-input" style="display: none;" accept=".json"
                                     onchange="app.loadConfig(event)">

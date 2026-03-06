@@ -49,7 +49,11 @@ export function switchTab(tabId) {
 }
 
 export function updateDurationLabel() {
-    state.raceDuration = parseInt(elements.durationInput.value, 10);
+    let rawDuration = parseInt(elements.durationInput.value, 10);
+    if (isNaN(rawDuration)) rawDuration = 25;
+
+    // Clamp between 5s and 300s to avoid Infinity speed or excessively long races
+    state.raceDuration = Math.max(5, Math.min(300, rawDuration));
     elements.durationLabel.textContent = state.raceDuration;
     autoSaveConfig();
 }
@@ -59,6 +63,12 @@ export function updatePrizeLabel() {
         state.prize = elements.prizeInput.value;
         autoSaveConfig();
     }
+}
+
+export function resetAppToDefault() {
+    if (!confirm("Are you sure you want to completely erase the configuration and return to default?")) return;
+    localStorage.removeItem('developerRaceConfig');
+    location.reload();
 }
 
 export function updateParticipantCount() {

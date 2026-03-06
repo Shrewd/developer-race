@@ -15,6 +15,7 @@ import {
     loadConfig,
     loadFromLocalStorage,
     initUIListeners,
+    resetAppToDefault,
     copyWinnerToClipboard
 } from './game/ui.js';
 
@@ -49,6 +50,7 @@ window.app = {
     startRace,
     endRace, // Exposed for debugging or manual aborts if necessary
     resetToConfig,
+    resetAppToDefault,
     saveConfig,
     loadConfig,
     copyWinnerToClipboard,

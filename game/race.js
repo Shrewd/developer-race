@@ -12,6 +12,8 @@ export function startRace() {
     // Prepare runners
     const firstNames = state.participants.map(name => name.split(' ')[0]);
     const nameCounts = {};
+    const shortNameCounts = {};
+
     firstNames.forEach(fn => { nameCounts[fn] = (nameCounts[fn] || 0) + 1; });
 
     state.runners = state.participants.map((name, index) => {
@@ -20,6 +22,12 @@ export function startRace() {
         let shortName = firstName;
         if (nameCounts[firstName] > 1 && parts.length > 1) {
             shortName = `${firstName} ${parts[1][0].toUpperCase()}.`;
+        }
+
+        // Handle identical shortNames (e.g. Juan Gomez and Juan Garcia both become Juan G.)
+        shortNameCounts[shortName] = (shortNameCounts[shortName] || 0) + 1;
+        if (shortNameCounts[shortName] > 1) {
+            shortName = `${shortName} (${shortNameCounts[shortName]})`;
         }
 
         return {
@@ -104,7 +112,8 @@ export function buildRaceTrack() {
 export function raceLoop(timestamp) {
     if (state.raceFinished) return;
 
-    const deltaTime = (timestamp - state.lastTime) / 1000; // seconds
+    let deltaTime = (timestamp - state.lastTime) / 1000; // seconds
+    if (deltaTime > 0.1) deltaTime = 0.1; // clamp to 0.1s max to prevent tab throttling jump
     state.lastTime = timestamp;
 
     const elapsedTime = (timestamp - state.startTime) / 1000;
