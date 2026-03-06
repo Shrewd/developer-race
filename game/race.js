@@ -84,7 +84,7 @@ export function buildRaceTrack() {
                 ${index + 1}. "${runner.shortName}":
             </div>
             <div class="lane-track">
-                <div class="sprite-container" id="sprite-${runner.id}" style="left: 0%">
+                <div class="sprite-container" id="sprite-${runner.id}">
                     <div class="event-icon" id="icon-${runner.id}"></div>
                     <div class="sprite running ${runner.gender === 'female' ? 'female' : ''}" style="--hoodie-color: ${runner.color}">
                         ${getRunnerSvg(runner)}
@@ -189,8 +189,8 @@ function updateRunnerDOM(runner) {
     const spriteEl = document.getElementById(`sprite-${runner.id}`);
     const barEl = document.getElementById(`bar-${runner.id}`);
     if (spriteEl && barEl) {
-        spriteEl.style.left = `${runner.progress}%`;
-        barEl.style.width = `${runner.progress}%`;
+        spriteEl.style.transform = `translate(${runner.progress}cqw, -50%)`;
+        barEl.style.transform = `scaleX(${runner.progress / 100})`;
     }
 }
 

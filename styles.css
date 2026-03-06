@@ -452,6 +452,7 @@ textarea {
     position: relative;
     height: 54px;
     margin-right: 65px;
+    container-type: inline-size;
 }
 
 /* Pixel Sprite */
@@ -459,11 +460,12 @@ textarea {
     position: absolute;
     left: 0;
     top: 50%;
-    transform: translateY(-50%);
+    transform: translate(0cqw, -50%);
     width: 54px;
     height: 54px;
     z-index: 3;
-    transition: left 0.1s linear;
+    transition: transform 0.1s linear;
+    will-change: transform;
 }
 
 /* CSS Pixel Art Dev with Hoodie */
@@ -585,9 +587,12 @@ textarea {
 
 .progress-bar {
     height: 100%;
-    width: 0%;
+    width: 100%;
+    transform-origin: left;
+    transform: scaleX(0);
     background-color: var(--text-muted);
-    transition: width 0.1s linear, background-color 0.3s;
+    transition: transform 0.1s linear, background-color 0.3s;
+    will-change: transform;
 }
 
 .progress-bar.boost {
