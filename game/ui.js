@@ -51,11 +51,13 @@ export function switchTab(tabId) {
 export function updateDurationLabel() {
     state.raceDuration = parseInt(elements.durationInput.value, 10);
     elements.durationLabel.textContent = state.raceDuration;
+    autoSaveConfig();
 }
 
 export function updatePrizeLabel() {
     if (elements.prizeInput) {
         state.prize = elements.prizeInput.value;
+        autoSaveConfig();
     }
 }
 
@@ -75,6 +77,33 @@ export function updateParticipantCount() {
         elements.btnRun.disabled = false;
     } else {
         elements.btnRun.disabled = true;
+    }
+    autoSaveConfig();
+}
+
+export function autoSaveConfig() {
+    if (!state.participants.length && !state.prize) return; // Don't save empty state immediately on load
+    const config = {
+        duration: state.raceDuration,
+        prize: state.prize,
+        participants: state.participants
+    };
+    try {
+        localStorage.setItem('developerRaceConfig', JSON.stringify(config));
+    } catch (e) {
+        console.warn('Could not save to localStorage', e);
+    }
+}
+
+export function initUIListeners() {
+    if (elements.namesInput) {
+        elements.namesInput.addEventListener('input', updateParticipantCount);
+    }
+    if (elements.durationInput) {
+        elements.durationInput.addEventListener('input', updateDurationLabel);
+    }
+    if (elements.prizeInput) {
+        elements.prizeInput.addEventListener('input', updatePrizeLabel);
     }
 }
 
@@ -212,22 +241,7 @@ export function loadConfig(event) {
     reader.onload = (e) => {
         try {
             const config = JSON.parse(e.target.result);
-
-            if (config.duration) {
-                elements.durationInput.value = config.duration;
-                updateDurationLabel();
-            }
-
-            if (config.prize !== undefined) {
-                elements.prizeInput.value = config.prize;
-                updatePrizeLabel();
-            }
-
-            if (config.participants && Array.isArray(config.participants)) {
-                elements.namesInput.value = config.participants.join('\n');
-                updateParticipantCount();
-            }
-
+            applyConfig(config);
             showToast('Configuration loaded!', 'success');
         } catch (err) {
             showToast('Error parsing configuration file', 'error');
@@ -237,6 +251,37 @@ export function loadConfig(event) {
 
     // Reset the input so the same file can be loaded again if needed
     event.target.value = '';
+}
+
+export function loadFromLocalStorage() {
+    try {
+        const saved = localStorage.getItem('developerRaceConfig');
+        if (saved) {
+            const config = JSON.parse(saved);
+            applyConfig(config);
+            return true;
+        }
+    } catch (e) {
+        console.warn('Could not load from localStorage', e);
+    }
+    return false;
+}
+
+function applyConfig(config) {
+    if (config.duration) {
+        elements.durationInput.value = config.duration;
+        updateDurationLabel();
+    }
+
+    if (config.prize !== undefined) {
+        elements.prizeInput.value = config.prize;
+        updatePrizeLabel();
+    }
+
+    if (config.participants && Array.isArray(config.participants)) {
+        elements.namesInput.value = config.participants.join('\n');
+        updateParticipantCount();
+    }
 }
 
 export function copyWinnerToClipboard() {

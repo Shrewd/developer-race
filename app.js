@@ -13,6 +13,8 @@ import {
     resetToConfig,
     saveConfig,
     loadConfig,
+    loadFromLocalStorage,
+    initUIListeners,
     copyWinnerToClipboard
 } from './game/ui.js';
 
@@ -25,12 +27,18 @@ window.app = {
         initElements();
 
         // Initial setup for UI
-        updateParticipantCount();
-        updateDurationLabel();
-        updatePrizeLabel();
+        if (!loadFromLocalStorage()) {
+            // Only use defaults if nothing was loaded
+            updateParticipantCount();
+            updateDurationLabel();
+            updatePrizeLabel();
+        }
 
         // Setup initial line numbers
         renderLineNumbers(50, 'config-lines');
+
+        // Watch for config changes
+        initUIListeners();
 
         // Allow initializing audio context on first interaction
         document.body.addEventListener('click', () => {
