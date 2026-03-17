@@ -3,3 +3,4 @@ nginx-*/
 nginx.zip
 developer_race_spec*.md
 *.png
+internal/

@@ -24,3 +24,4 @@ node_modules/
 # Saved race configs (user-specific)
 race-config.json
 .vercel
+internal/
