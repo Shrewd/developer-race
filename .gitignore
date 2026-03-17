@@ -5,7 +5,6 @@ nginx-*/
 nginx.zip
 
 # Spec / design docs
-*.md
 
 # OS files
 .DS_Store
