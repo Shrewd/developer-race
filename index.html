@@ -1,0 +1,270 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Developer Race - Visual Studio Code</title>
+    <link rel="stylesheet" href="styles.css">
+    <link href="https://fonts.googleapis.com/css2?family=Fira+Code:wght@400;500;700&display=swap" rel="stylesheet">
+</head>
+
+<body>
+    <div class="vscode-container">
+        <!-- Title Bar -->
+        <header class="title-bar">
+            <!-- Left side empty to match Windows 11 standard application layout where controls are on the right -->
+            <div style="width: 60px;"></div>
+            <div class="title-text">Developer Race — Visual Studio Code</div>
+            <div class="window-controls right-controls">
+                <div class="win-control minimize"><span>─</span></div>
+                <div class="win-control maximize"><span>□</span></div>
+                <div class="win-control close"><span>✕</span></div>
+            </div>
+        </header>
+
+        <div class="main-body">
+            <!-- Activity Bar -->
+            <div class="activity-bar">
+                <div class="activity-icon active">📄</div>
+                <div class="activity-icon">🔍</div>
+                <div class="activity-icon">ᛦ</div>
+                <div class="activity-icon">🐛</div>
+                <div class="activity-icon">📦</div>
+            </div>
+
+            <!-- Sidebar -->
+            <div class="sidebar">
+                <div class="sidebar-title">EXPLORER</div>
+                <div class="sidebar-section">
+                    <div class="folder-title">
+                        <span class="chevron">˅</span> DEVELOPER-RACE
+                    </div>
+                    <div class="folder-content">
+                        <div class="folder">
+                            <span class="chevron">˅</span> src
+                        </div>
+                        <div class="folder-content indented">
+                            <div class="file" id="tree-config" onclick="app.switchTab('config')">📄 race-config.json
+                            </div>
+                            <div class="file" id="tree-race" onclick="app.switchTab('race')">📄 race-output.log</div>
+                            <div class="file" id="tree-winner" onclick="app.switchTab('winner')">📄 winner.md</div>
+                        </div>
+                        <div class="folder text-muted">
+                            <span class="chevron">></span> node_modules
+                        </div>
+                        <div class="file">📄 package.json</div>
+                        <div class="file">📄 .gitignore</div>
+                        <div class="file active" id="tree-readme" onclick="app.switchTab('readme')">📄 README.md</div>
+                    </div>
+                </div>
+
+                <!-- Live Ranking Panel (Visible during race) -->
+                <div class="sidebar-section" id="ranking-panel" style="display: none;">
+                    <br>
+                    <div class="folder-title">
+                        <span class="chevron">˅</span> RANKING
+                    </div>
+                    <div class="folder-content" id="ranking-list">
+                        <!-- Instantiated by JS -->
+                    </div>
+                </div>
+            </div>
+
+            <!-- Editor Area -->
+            <div class="editor-area">
+                <!-- Tabs -->
+                <div class="tabs">
+                    <div class="tab active" tabindex="0" id="tab-readme" onclick="app.switchTab('readme')"
+                        onkeydown="if(event.key==='Enter'||event.key===' ') app.switchTab('readme')">
+                        <span class="file-icon">↓</span> README.md
+                    </div>
+                    <div class="tab" tabindex="0" id="tab-config" onclick="app.switchTab('config')"
+                        onkeydown="if(event.key==='Enter'||event.key===' ') app.switchTab('config')">
+                        <span class="file-icon">{}</span> race-config.json
+                    </div>
+                    <div class="tab" tabindex="0" id="tab-race" onclick="app.switchTab('race')" style="display: none;"
+                        onkeydown="if(event.key==='Enter'||event.key===' ') app.switchTab('race')">
+                        <span class="file-icon">≡</span> race-output.log
+                    </div>
+                    <div class="tab" tabindex="0" id="tab-winner" onclick="app.switchTab('winner')"
+                        style="display: none;"
+                        onkeydown="if(event.key==='Enter'||event.key===' ') app.switchTab('winner')">
+                        <span class="file-icon">↓</span> winner.md
+                    </div>
+                </div>
+
+                <!-- Breadcrumbs -->
+                <div class="breadcrumbs">
+                    DEVELOPER-RACE > <span id="breadcrumb-current">README.md</span>
+                </div>
+
+                <!-- Content Area -->
+                <div class="content-container">
+
+                    <!-- View: Readme -->
+                    <div class="view active" id="view-readme">
+                        <div class="editor-content markdown-preview" style="padding: 40px; text-align: center;">
+                            <h1 style="font-size: 3em; color: var(--syn-function); margin-bottom: 20px;">Developer Race
+                                🚀</h1>
+                            <p
+                                style="font-size: 1.2em; color: var(--text-muted); margin-bottom: 40px; max-width: 600px; margin-left: auto; margin-right: auto;">
+                                A fun, VS Code themed multiplayer racing game to decide who runs the next Daily Standup!
+                            </p>
+
+                            <div
+                                style="background-color: rgba(255,255,255,0.05); padding: 30px; border-radius: 8px; max-width: 600px; margin: 0 auto; text-align: left; border: 1px solid var(--border-color);">
+                                <h3 style="color: var(--syn-keyword); margin-bottom: 15px;">🎮 How to Play</h3>
+                                <ol style="color: var(--text-main); line-height: 1.8; margin-left: 20px;">
+                                    <li>Open <code
+                                            style="color: var(--syn-string); background: rgba(0,0,0,0.3); padding: 2px 6px; border-radius: 4px;">src/race-config.json</code>
+                                        from the Explorer.</li>
+                                    <li>Enter the names of the developers participating.</li>
+                                    <li>Adjust the desired race duration.</li>
+                                    <li>Click <strong>Run Race</strong> to start!</li>
+                                </ol>
+                            </div>
+
+                            <button class="run-button"
+                                style="margin-top: 40px; font-size: 1.2em; padding: 12px 24px; background-color: var(--status-bar);"
+                                onclick="app.switchTab('config')">
+                                Get Started →
+                            </button>
+                        </div>
+                    </div>
+
+                    <!-- View: Config -->
+                    <div class="view" id="view-config">
+                        <div class="line-numbers" id="config-lines">
+                            <!-- Lines generated dynamically -->
+                        </div>
+                        <div class="editor-content">
+                            <div class="code-line"><span class="token-comment">// Configure your race parameters
+                                    below</span></div>
+                            <div class="code-line"><span class="token-keyword">const</span> <span
+                                    class="token-variable">raceConfig</span> <span class="token-operator">=</span> <span
+                                    class="token-punctuation">{</span></div>
+                            <div class="code-line indent-1"><span class="token-string">"prize"</span><span
+                                    class="token-operator">:</span>
+                                <span class="token-string">"</span><span
+                                    style="color: var(--syn-function); font-weight: bold;">[Name]</span>&nbsp;<input
+                                    type="text" id="race-prize" value="runs the daily standup!"
+                                    oninput="app.updatePrizeLabel()"
+                                    style="background: transparent; border: none; color: var(--syn-string); border-bottom: 1px dotted var(--text-muted); outline: none; width: 200px; font-family: var(--font-mono); font-size: 14px;"><span
+                                    class="token-string">"</span><span class="token-punctuation">,</span>
+                            </div>
+                            <div class="code-line indent-1"><span class="token-string">"duration"</span><span
+                                    class="token-operator">:</span>
+                                <input type="range" id="race-duration" min="10" max="60" value="15"
+                                    oninput="app.updateDurationLabel()">
+                                <span class="token-number" id="duration-label">15</span><span
+                                    class="token-punctuation">,</span> <span class="token-comment">// seconds</span>
+                            </div>
+                            <div class="code-line indent-1"><span class="token-string">"participants"</span><span
+                                    class="token-operator">:</span> <span class="token-punctuation">[</span></div>
+                            <div class="textarea-container">
+                                <textarea id="names-input" spellcheck="false" oninput="app.updateParticipantCount()">
+// Write one name per line
+Anna
+Charlie
+Mary
+Peter
+</textarea>
+                            </div>
+                            <div class="code-line indent-1"><span class="token-punctuation">]</span></div>
+                            <div class="code-line"><span class="token-punctuation">}</span><span
+                                    class="token-punctuation">;</span></div>
+                            <br>
+                            <div class="code-line">
+                                <span class="token-comment" id="dev-count-label">// 4 developers ready</span>
+                            </div>
+                            <div class="code-line" style="margin-top: 15px; display: flex; gap: 10px;">
+                                <button id="btn-run" class="run-button" onclick="app.startRace()">
+                                    ▶ Run Race
+                                </button>
+                                <button id="btn-save" class="run-button" style="background-color: var(--accent);"
+                                    onclick="app.saveConfig()">
+                                    💾 Save Config
+                                </button>
+                                <button id="btn-load" class="run-button" style="background-color: var(--syn-string);"
+                                    onclick="document.getElementById('config-file-input').click()">
+                                    📂 Load Config
+                                </button>
+                                <button id="btn-reset" class="run-button" style="background-color: #d16969;"
+                                    onclick="app.resetAppToDefault()">
+                                    🗑️ Reset Defaults
+                                </button>
+                                <input type="file" id="config-file-input" style="display: none;" accept=".json"
+                                    onchange="app.loadConfig(event)">
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- View: Race -->
+                    <div class="view" id="view-race">
+                        <div class="line-numbers" id="race-lines"></div>
+                        <div class="editor-content" id="track-container">
+                            <!-- Race lanes generated by JS -->
+                        </div>
+
+                        <!-- Absolute positioned events container -->
+                        <div id="toast-container"></div>
+                    </div>
+
+                    <!-- View: Winner -->
+                    <div class="view" id="view-winner">
+                        <div class="editor-content markdown-preview">
+                            <div id="winner-announcement" class="typewriter-text"></div>
+
+                            <div class="podium-container" id="podium-container">
+                                <!-- Podium generated by JS -->
+                            </div>
+
+                            <h3 class="mt-4">📋 Complete Ranking</h3>
+                            <table class="ranking-table" id="final-ranking-table">
+                                <thead>
+                                    <tr>
+                                        <th>Pos</th>
+                                        <th>Developer</th>
+                                        <th>Status</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <!-- Rows generated by JS -->
+                                </tbody>
+                            </table>
+
+                            <div class="actions-row">
+                                <button class="action-button secondary" onclick="app.resetToConfig()">↻ New
+                                    Race</button>
+                                <button class="action-button primary" onclick="app.copyWinnerToClipboard()">📋 Copy
+                                    Result</button>
+                            </div>
+                        </div>
+                        <canvas id="confetti-canvas"></canvas>
+                    </div>
+
+                </div>
+            </div>
+        </div>
+
+        <!-- Status Bar -->
+        <footer class="status-bar">
+            <div class="status-left">
+                <span class="status-item">🔀 main</span>
+                <span class="status-item">↻ 0</span>
+                <span class="status-item">❌ 0 ⚠️ 0</span>
+            </div>
+            <div class="status-right">
+                <span class="status-item" id="status-time">Ln 0, Col 30</span>
+                <span class="status-item" id="status-leader">Leader: None</span>
+                <span class="status-item">UTF-8</span>
+                <span class="status-item">JavaScript</span>
+            </div>
+        </footer>
+    </div>
+
+    <script type="module" src="app.js"></script>
+</body>
+
+</html>

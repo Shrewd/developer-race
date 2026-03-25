@@ -1,0 +1,26 @@
+# Developer Race - .gitignore
+
+# Nginx (not part of the project)
+nginx-*/
+nginx.zip
+
+# Spec / design docs
+
+# OS files
+.DS_Store
+Thumbs.db
+desktop.ini
+
+# Editor / IDE
+.vscode/
+.idea/
+*.swp
+*.swo
+
+# Node (if ever added)
+node_modules/
+
+# Saved race configs (user-specific)
+race-config.json
+.vercel
+internal/
