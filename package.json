@@ -1,0 +1,21 @@
+{
+  "name": "developer-race",
+  "version": "1.0.0",
+  "description": "A fun, VS Code-themed multiplayer racing game designed to decide who runs the next Daily Standup",
+  "main": "app.js",
+  "scripts": {
+    "test": "echo \"No tests specified\""
+  },
+  "keywords": [
+    "game",
+    "racing",
+    "vscode",
+    "standup"
+  ],
+  "author": "Shrewd",
+  "license": "MIT",
+  "packageManager": "pnpm@10.33.0",
+  "dependencies": {
+    "@vercel/analytics": "^2.0.1"
+  }
+}
